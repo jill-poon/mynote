@@ -24,6 +24,28 @@ Spring JavaConfig 是 Spring 社区的产品，它提供了配置 Spring IoC 容
 * **减少或消除 XML 配置**。基于依赖注入原则的外化配置的好处已被证明。但是，许多开发人员不希望在 XML 和 Java 之间来回切换。JavaConfig 为开发人员提供了一种纯 Java 方法来配置与 XML 配置概念相似的 Spring 容器。从技术角度来讲，只使用 JavaConfig 配置类来配置容器是可行的，但实际上很多人认为将 JavaConfig 与 XML 混合匹配是理想的。
 * **类型安全和重构友好**。JavaConfig 提供了一种类型安全的方法来配置 Spring 容器。由于Java 5.0 对泛型的支持，现在可以按类型而不是按名称检索 bean，不需要任何强制转换或基于字符串的查找。
 
+## Spring Boot 自动装配机制的原理
+
+自动装配机制是指自动去把第三方组件的 `Bean`，装载到 `IOC` 容器里面，不需要开发人员再去写 `Bean` 相关配置，在 `Spring Boot` 应用里面，只需要在**启动类**上去加上 `@SpringBootApplication` 注解就可以实现自动装配， `@SpringBootApplication` 是**复合注解**，真正实现自动装配的注解是 **`@EnableAutoConfiguration`** 注解。
+
+自动装配的实现，主要依靠三个核心的关键点：
+
+1. **引入 `Starter`** ，启动组件时，组件必须**包含 `@Configuration` 配置类**，而在配置类里面，我们需要通过 `@Bean` 这个注解去声明需要装配到IOC容器里面的 `Bean` 对象。
+2. 这个配置类放在第三方的 `jar` 包里面，然后通过 `Spring Boot` 中，**约定优于配置**的这样一个原则，去把配置类的全路径放在 **`classpath:/META-INF/spring.factories`** 文件里面，这样 `Spring Boot` 就可以知道，第三方 `jar` 包里面这个配置类的位置，这个步骤主要 `Spring` 里面的 **`SpringFactoriesLoader`** 来完成的。
+3. `Spring Boot` 拿到所有第三方 `jar` 包里面声明的配置类以后，再通过 `Spring` 提供的  **`ImportSelector` 接口**来实现对这些配置类的动态加载，从而去完成自动装配。
+
+我认为整个 **`Spirng Boot`** 都是以**约定优于配置**作为整个框架的**核心思想**进行设计的，它的出现让开发人员可以更加地**聚焦在业务代码**上面，而**不需要去关心和业务无关的配置**。
+
+## Spring Boot 约定优于配置的体现
+
+1. `maven` 的目录结构
+  a) 默认有 `resources` 文件夹存放配置文件
+  b) 默认打包方式为 `jar`
+2. `spring-boot-starter-web` 中默认包含 `spring mvc` 相关依赖以及内置的 `tomcat` 容器，使得构建一个web应用更加简单
+3. 默认提供 `application.properties/yml` 文件
+4. 默认通过 `spring.profiles.active` 属性来决定运行环境时读取的配置文件
+5. `@EnableAutoConfiguration` 默认对于依赖的 `starter` 进行自动装载
+
 ## 如何重新加载 Spring Boot 上的更改，而无需重新启动服务器？
 
 这可以使用 DEV 工具来实现。通过这种依赖关系，您可以节省任何更改，嵌入式 `tomcat` 将重新启动。Spring Boot 有一个开发工具（**`DevTools`**）模块，它有助于提高开发人员的生产力。Java 开发人员面临的一个主要挑战是将文件更改自动部署到服务器并自动重启服务器。开发人员可以重新加载 Spring Boot 上的更改，而无需重新启动服务器。这将消除每次手动部署更改的需要。Spring Boot 在发布它的第一个版本时没有这个功能。这是开发人员最需要的功能。DevTools 模块完全满足开发人员的需求。该模块将在生产环境中被禁用。它还提供 H2 数据库控制台以更好地测试应用程序。
@@ -72,7 +94,7 @@ YAML 是一种人类可读的数据序列化语言。它通常用于配置文件
 
 ## 什么是 Swagger？你用 Spring Boot 实现了它吗？
 
-`Swagger` 广泛用于可视化 `API`，使用 `Swagger UI` 为前端开发人员提供在线沙箱。`Swagger` 是**用于生成 `RESTful Web` 服务的可视化表示的工具**，规范和完整框架实现。它使文档能够以与服务器相同的速度更新。当通过 `Swagger` 正确定义时，消费者可以使用最少量的实现逻辑来理解远程服务并与其进行交互。因此，`Swagger` 消除了调用服务时的猜测。
+`Swagger` 广泛用于可视化 `API`，使用 `Swagger UI` 为前端开发人员提供在线沙箱。`Swagger` 是**用于生成 `RESTful Web` 服务的可视化表示的工具，规范和完整框架实现**。它使文档能够以与服务器相同的速度更新。当通过 `Swagger` 正确定义时，消费者可以使用最少量的实现逻辑来理解远程服务并与其进行交互。因此，`Swagger` 消除了调用服务时的猜测。
 
 ## 什么是 Spring Profiles？
 
