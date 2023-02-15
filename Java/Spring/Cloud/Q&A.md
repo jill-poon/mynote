@@ -2,18 +2,19 @@
 
 ## 什么是 Spring Cloud？
 
-Spring cloud 流应用程序启动器是基于 Spring Boot 的 Spring 集成应用程序，提供与外部系统的集成。
-Spring cloud Task，一个生命周期短暂的微服务框架，用于快速构建执行有限数据处理的应用程序。
+`Spring Cloud` 流应用程序启动器是基于 `Spring Boot` 的 `Spring` 集成应用程序，提供与外部系统的集成。
+`Spring cloud Task`，一个生命周期短暂的微服务框架，用于快速构建执行有限数据处理的应用程序。
 
 ## 使用 Spring Cloud 有什么优势？
 
-使用 Spring Boot 开发分布式微服务时，我们面临以下问题
-• 与分布式系统相关的复杂性-这种开销包括网络问题，延迟开销，带宽问题，安全问题。
-• 服务发现-服务发现工具管理群集中的流程和服务如何查找和互相交谈。它涉及一个服务目录，在该目录中注册服务，然后能够查找并连接到该目录中的服务。
-• 冗余-分布式系统中的冗余问题。
-• 负载平衡 --负载平衡改善跨多个计算资源的工作负荷，诸如计算机，计算机集群，网络链路，中央处理单元，或磁盘驱动器的分布。
-• 性能-问题 由于各种运营开销导致的性能问题。
-• 部署复杂性-Devops 技能的要求。
+使用 `Spring Boot` 开发分布式微服务时，我们面临以下问题
+
+* **与分布式系统相关的复杂性**。这种开销包括网络问题，延迟开销，带宽问题，安全问题。
+* **服务发现**。服务发现工具管理群集中的流程和服务如何查找和互相交谈。它涉及一个服务目录，在该目录中注册服务，然后能够查找并连接到该目录中的服务。
+* **冗余**。分布式系统中的冗余问题。
+* **负载平衡**。负载平衡改善跨多个计算资源的工作负荷，诸如计算机，计算机集群，网络链路，中央处理单元，或磁盘驱动器的分布。
+* **性能**。问题 由于各种运营开销导致的性能问题。
+* **部署复杂性**。Devops 技能的要求。
 
 ## 服务注册和发现是什么意思？Spring Cloud 如何实现？
 
@@ -21,7 +22,14 @@ Spring cloud Task，一个生命周期短暂的微服务框架，用于快速构
 
 ## 负载平衡的意义什么？
 
-在计算中，负载平衡可以改善跨计算机，计算机集群，网络链接，中央处理单元或磁盘驱动器等多种计算资源的工作负载分布。负载平衡旨在优化资源使用，最大化吞吐量，最小化响应时间并避免任何单一资源的过载。使用多个组件进行负载平衡而不是单个组件可能会通过冗余来提高可靠性和可用性。负载平衡通常涉及专用软件或硬件，例如多层交换机或域名系统服务器进程。
+在计算中，负载平衡可以改善跨计算机，计算机集群，网络链接，中央处理单元或磁盘驱动器等多种计算资源的工作负载分布。负载平衡旨在
+
+* **优化资源使用**
+* **最大化吞吐量**，
+* **最小化响应时间**并
+* **避免任何单一资源的过载**
+  
+使用多个组件进行负载平衡而不是单个组件可能会**通过冗余来提高可靠性和可用性**。负载平衡通常涉及**专用软件或硬件**，*例如**多层交换机**或**域名系统服务器进程***。
 
 ## 什么是 Hystrix？它如何实现容错？
 
@@ -49,24 +57,32 @@ Feign 是受到 Retrofit，JAXRS-2.0 和 WebSocket 启发的 java 客户端联�
 • 利用 REST 模板来使用服务。 前面的代码如下
 
 ```Java
-1. @Controller
-2. public class ConsumerControllerClient { 3.
-4. @Autowired
-5. private LoadBalancerClient loadBalancer; 6.
-7. public void getEmployee() throws RestClientException, IOException { 8.
-9. ServiceInstance serviceInstance=loadBalancer.choose("employee-producer"); 10.
-11. System.out.println(serviceInstance.getUri()); 12.
-13. String baseUrl=serviceInstance.getUri().toString(); 14.
-15. baseUrl=baseUrl+"/employee"; 16.
-17.   RestTemplate restTemplate = new RestTemplate();
-18.   ResponseEntity<String> response=null;
-19. try{
-20.   response=restTemplate.exchange(baseUrl,
-21.   HttpMethod.GET, getHeaders(),String.class);
-22.   }catch (Exception ex) 23.  {
-24.  System.out.println(ex); 25. }
-26. System.out.println(response.getBody());
-27. }
+@Controller
+public class ConsumerControllerClient { 
+
+    @Autowired
+    private LoadBalancerClient loadBalancer; 
+
+    public void getEmployee() throws RestClientException, IOException { 
+
+        ServiceInstance serviceInstance = loadBalancer.choose("employee-producer"); 
+
+        System.out.println(serviceInstance.getUri());
+        String baseUrl = serviceInstance.getUri().toString(); 
+
+        baseUrl = baseUrl + "/employee"; 
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(baseUrl, HttpMethod.GET, getHeaders() ,String.class);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        
+        System.out.println(response.getBody());
+    }
+}
 ```
 
 之前的代码，有像 NullPointer 这样的例外的机会，并不是最优的。我们将看到如何使用 Netflix Feign 使呼叫变得更加轻松和清洁。如果 Netflix Ribbon 依赖关系也在类路径中，那么 Feign 默认也会负责负载平衡。
