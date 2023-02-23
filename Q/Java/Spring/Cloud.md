@@ -1,5 +1,23 @@
 # Spring Cloud
 
+## 什么是CAP原则
+
+## 什么是BASE原则
+
+## Nacos
+
+### 什么是注册中心
+
+### Nacos 是怎么注册服务的
+
+### Nacos 客户端负载均衡
+
+### Nacos 心跳机制
+
+### Nacos Distro 协议
+
+### Nacos 配置中心原理
+
 ## Sentinel
 
 ### 什么是Sentinel？
@@ -21,3 +39,31 @@
 ### 什么是 `Context`, `Entry`, `Node`？
 
 ### 什么是 , `Slot Chain`？
+
+### `StatisticNode`
+
+## Seata
+
+### 1 Seata 是什么？
+
+### 2 Seata 支持事务模式
+
+### 3 Seata 的全局事务处理过程
+
+### 4 事务模式
+
+#### 4.1 `AT` 模式
+
+#### 4.2 `XA` 模式
+
+##### 4.2.1 为什么 Seata 中支持 `XA` ？
+
+#### 4.3 `TCC` 模式
+
+#### 4.4 `Saga` 模式
+
+### 5 隔离
+
+#### 5.1 写隔离
+
+#### 5.2 读隔离

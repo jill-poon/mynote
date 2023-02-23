@@ -2,6 +2,8 @@
 
 ---
 
+[TOC]
+
 ## Java
 
 ### Programming
