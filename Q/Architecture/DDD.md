@@ -1,6 +1,7 @@
 # DDD
 
-[Q&A](../../Design/DDD/Q%26A.md)
+[Q&A](../../Architecture/DDD/Q&A.md)
+[领域驱动设计](../../Architecture/DDD/0-领域驱动设计.md)
 
 ## 业务对象 ? （3）
 

@@ -23,25 +23,31 @@
 ## 零拷贝
 
 - 零拷贝技术是指计算机执行操作时，CPU 不需要先将数据从某处内存复制到另一个特定区域，这种技术通常用于通过网络传输文件时节省 CPU 周期和内存带宽。
-- 那么对于零拷贝而言，并非真的是完全没有数据拷贝的过程，只不过是减少用户态和内核态的切换次数以及 CPU 拷贝的次数。
+- 那么对于零拷贝而言，**并非真的是完全没有数据拷贝**的过程，只不过是减少**用户态和内核态的切换次数**以及 **CPU 拷贝的次数**。
 
-## Mmap+write
+## mmap+write
 
-- Mmap+write 简单来说就是使用 mmap 替换了 read+write 中的 read 操作，减少了一次 CPU 的拷贝。
-- Mmap 主要实现方式是将读缓冲区的地址和用户缓冲区的地址进行映射，内核缓冲区和应用缓冲区共享，从而减少了从读缓冲区到用户缓冲区的一次 CPU 拷贝。
-- mmap 的方式节省了一次 CPU 拷贝，同时由于用户进程中的内存是虚拟的，只是映射到内核的读缓冲区，所以可以节省一半的内存空间，比较适合大文件的传输 ![mmap_02.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/908/1630722045000/d303ba82fa4443b6b66989566820bf74.png)
+- Mmap+write 简单来说就是使用 mmap 替换了 read+write 中的 read 操作，**减少了一次 CPU 的拷贝**。
+- Mmap 主要实现方式是将 **读缓冲区的地址** 和 **用户缓冲区的地址** ***进行映射*** ，内核缓冲区和应用缓冲区 **共享**，从而减少了从读缓冲区到用户缓冲区的一次 CPU 拷贝。
+- mmap 的方式节省了一次 CPU 拷贝，同时由于用户进程中的内存是虚拟的，只是映射到内核的读缓冲区，所以可以节省一半的内存空间，比较适合大文件的传输
 
-## Sendfile
+ ![mmap_02.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/908/1630722045000/d303ba82fa4443b6b66989566820bf74.png)
+
+## sendfile
 
 - 相比 mmap 来说，sendfile 同样减少了一次 CPU 拷贝，而且还减少了 2 次上下文切换。
-- Sendfile 是 Linux 2.1 内核版本后引入的一个系统调用函数，通过使用 sendfile 数据可以直接在内核空间进行传输，因此避免了用户空间和内核空间的拷贝，同时由于使用 sendfile 替代了 read+write 从而节省了一次系统调用，也就是2次上下文切换。
-- sendfile 方法 IO 数据对用户空间完全不可见，所以只能适用于完全不需要用户空间处理的情况，比如静态文件服务器。![mmap_03.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/908/1630722045000/0b1825a42e9b42958f628ed172fb3bb4.png)
+- sendfile 是 Linux 2.1 内核版本后引入的一个系统调用函数，通过使用 sendfile 数据可以直接在**内核空间**进行传输，因此避免了用户空间和内核空间的拷贝，同时由于使用 sendfile 替代了 read+write 从而节省了**一次系统调用**，也就是**2次上下文切换**。
+- sendfile 方法 IO 数据对用户空间完全不可见，所以只能适用于完全不需要用户空间处理的情况，比如静态文件服务器。
+
+![mmap_03.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/908/1630722045000/0b1825a42e9b42958f628ed172fb3bb4.png)
 
 ## Sendfile+DMA Scatter/Gather
 
-- Linux 2.4 内核版本之后对 sendfile 做了进一步优化，通过引入新的硬件支持，这个方式叫做 DMA Scatter/Gather 分散/收集功能。
+- Linux 2.4 内核版本之后对 sendfile 做了进一步优化，通过引入新的**硬件支持**，这个方式叫做 DMA Scatter/Gather 分散/收集功能。
 - 它将读缓冲区中的数据描述信息--内存地址和偏移量记录到 socket 缓冲区，由 DMA 根据这些将数据从读缓冲区拷贝到网卡，相比之前版本减少了一次 CPU 拷贝的过程
-- DMA gather 和 sendfile 一样数据对用户空间不可见，而且需要硬件支持，同时输入文件描述符只能是文件，但是过程中完全没有 CPU 拷贝过程，极大提升了性能。![mmap_04.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/908/1630722045000/685cb43d658746f993c0c03ace042773.png)
+- DMA gather 和 sendfile 一样数据对用户空间不可见，而且需要硬件支持，同时输入文件描述符只能是**文件**，但是过程中完全没有 **CPU 拷贝**过程，极大提升了性能。
+
+![mmap_04.png](https://fynotefile.oss-cn-zhangjiakou.aliyuncs.com/fynote/908/1630722045000/685cb43d658746f993c0c03ace042773.png)
 
 ## 总结
 

@@ -20,6 +20,8 @@
 
 ## Sentinel
 
+[Sentinel](../../../Java/Spring/Cloud/Sentinel.md)
+
 ### 什么是Sentinel？
 
 ### Sentinel 有哪些规则？
@@ -43,6 +45,8 @@
 ### `StatisticNode`
 
 ## Seata
+
+[Seata](../../../Java/Spring/Cloud/Seata.md)
 
 ### 1 Seata 是什么？
 

@@ -69,7 +69,7 @@
 ### 4.1 什么是 `Context`, `Entry`, `Node` ？
 
 * **`Context`**：代表**调用链路的上下文**，贯穿依次调用链路中所有的 `Entry`。`Context` 会以 **`ThreadLocal`** 传递的方式，维持着 **`entranceNode`**, **`curEntry`**, **调用来源** 等信息。
-* **`Entry`**：每次资源调用**都会创建一个 `Entry`** ,  `Entry` 实例维护着 **资源名称**，**curNode**，**originNode** 等信息。
+* **`Entry`**：每次资源调用**都会创建一个 `Entry`** , `Entry` 实例维护着 **资源名称**，**curNode**，**originNode** 等信息。
 * **`Node`**：`Sentinel` 里面的**统计节点**
 
 ### 4.2 什么是, `Slot Chain` ？(7)
@@ -79,12 +79,12 @@
 在默认的情况下，`Sentinel` 会创建：
 
 1. **NodeSelectorSlot**，负责**收集资源路径**，以**树状结构**存储起来，用于根据调用路径来限流降级。
-1. **ClusterBuilderSlot**，用于存储**资源统计信息**及**调用者信息**，如 **`RT`** ，**`QPS`**，**`Thread Count`** ，用于作为限流降级依据。
-1. **StatisticSlot**，统计 **`runtime`** 信息。
-1. **SystemSlot**，用过**系统状态**，控制**总的入口流量**。
-1. **AuthoritySlot**，根据**黑白名单**，控制流量。
-1. **FlowSlot**，限流。
-1. **DegradeSlot**，降级。
+2. **ClusterBuilderSlot**，用于存储**资源统计信息**及**调用者信息**，如 **`RT`** ，**`QPS`**，**`Thread Count`** ，用于作为限流降级依据。
+3. **StatisticSlot**，统计 **`runtime`** 信息。
+4. **SystemSlot**，用过**系统状态**，控制**总的入口流量**。
+5. **AuthoritySlot**，根据**黑白名单**，控制流量。
+6. **FlowSlot**，限流。
+7. **DegradeSlot**，降级。
   
 ### 4.3 可以说一下 `Sentinel` 有哪些 `Node` 吗？(4)
 
