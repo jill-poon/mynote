@@ -2,7 +2,14 @@
 
 漏桶算法思想：以**固定速率**消费请求，漏桶容量固定，每次用户请求都得放入桶中，桶满则拒绝请求或等待。达到平滑网络请求的效果。
 
-![LeakyBucket](./images/LeakyBucket.drawio.svg)
+
+```mermaid
+flowchart TB
+    s1([Request])-->c1{"Full?"}
+    c1-- yes --> e1((Reject))
+    c1-- "put" --> db[("Bucket")]
+    db--> n2((Pass))
+```
 
 ## 令牌与漏桶的区别
 
