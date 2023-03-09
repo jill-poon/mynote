@@ -191,11 +191,6 @@ JVM 这部分内容主要参考 [JVM 虚拟机规范-Java8 open in new window](h
 - [Redis 内存碎片详解](/database/redis/redis-memory-fragmentation.html)
 - [Redis 集群详解](/database/redis/redis-cluster.html)
 
-### MongoDB
-
-- [MongoDB 常见知识点&面试题总结(上)](/database/mongodb/mongodb-questions-01.html)
-- [MongoDB 常见知识点&面试题总结(下)](/database/mongodb/mongodb-questions-02.html)
-
 ## 搜索引擎
 
 ELK
@@ -260,7 +255,7 @@ ELK
 
 #### 数据脱敏
 
-数据脱敏说的就是我们根据特定的规则对敏感信息数据进行变形，比如我们把手机号、身份证号某些位数使用 * 来代替。
+数据脱敏说的就是我们根据特定的规则对敏感信息数据进行变形，比如我们把手机号、身份证号某些位数使用 \* 来代替。
 
 #### 敏感词过滤
 

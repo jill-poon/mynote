@@ -369,7 +369,7 @@ remote_write:
 
 ### 时序数据库 TSDB
 
-- [LSM](../Algorithm/LSM.md)
+- [LSM](../../Algorithm/LSM.md)
 - [facebook Gorilla 压缩算法]( https://blog.acolyer.org/2016/05/03/gorilla-a-fast-scalable-in-memory-time-series-database/ )
   - DOD 压缩，压缩时序
   - XOR 压缩，压缩值
@@ -464,6 +464,6 @@ remote_write:
 
 ## 配置 alertmanager 高可用并测试
 
-- [Gossoip](../Algorithm/Gossoip.md)协议
+- [Gossoip](../../Algorithm/Gossoip.md)协议
 
 ## 告警自愈之回调重启服务实战

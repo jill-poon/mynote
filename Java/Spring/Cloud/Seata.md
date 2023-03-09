@@ -121,4 +121,4 @@
 
 * 数据库本地事务隔离级别 **读已提交（Read Committed）** 或以上的基础上, Seata（AT 模式）的默认全局隔离级别是 **读未提交（Read Uncommitted）** 。
 * 需要求全局的 **读已提交**，目前 Seata 的方式是通过 `SELECT FOR UPDATE` 语句的代理。
-  * `SELECT FOR UPDATE` 语句的执行会申请 **全局锁**。如果 **全局锁** 被其他事务持有，则释放本地锁（回滚 `SELECT FOR UPDATE` 语句的本地执行）并重试。
+  * `SELECT FOR UPDATE` 语句的执行会申请 **全局锁(全局表)**。如果 **全局锁** 被其他事务持有，则释放本地锁（回滚 `SELECT FOR UPDATE` 语句的本地执行）并重试。

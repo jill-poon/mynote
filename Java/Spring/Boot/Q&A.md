@@ -13,7 +13,7 @@ Spring Boot 是解决这个问题的方法。Spring Boot 已经建立在现有 s
 * 通过提供默认值快速开始开发。
 * 没有单独的 Web 服务器需要。这意味着你不再需要启动 Tomcat，* Glassfish 或其他任何东西。
 * 需要更少的配置 因为没有 web.xml 文件。只需添加用@ Configuration 注释的类，然后添加用@Bean 注释的方法，Spring 将自动加载对象并像以前一样对其进行管理。您甚至可以将@Autowired 添加到 bean 方法中，以使 Spring 自动装入需要的依赖关系中。
-* 基于环境的配置  使用这些属性，您可以将您正在使用的环境传递到应用程序：- Dspring.profiles.active =  {enviornment}。在加载主应用程序属性文件后，Spring 将在
+* 基于环境的配置 使用这些属性，您可以将您正在使用的环境传递到应用程序：- Dspring.profiles.active = {enviornment}。在加载主应用程序属性文件后，Spring 将在
 * (application{environment} .properties) 中加载后续的应用程序属性文件。
 
 ## 什么是 JavaConfig？
@@ -32,7 +32,7 @@ Spring JavaConfig 是 Spring 社区的产品，它提供了配置 Spring IoC 容
 
 1. **引入 `Starter`** ，启动组件时，组件必须**包含 `@Configuration` 配置类**，而在配置类里面，我们需要通过 `@Bean` 这个注解去声明需要装配到IOC容器里面的 `Bean` 对象。
 2. 这个配置类放在第三方的 `jar` 包里面，然后通过 `Spring Boot` 中，**约定优于配置**的这样一个原则，去把配置类的全路径放在 **`classpath:/META-INF/spring.factories`** 文件里面，这样 `Spring Boot` 就可以知道，第三方 `jar` 包里面这个配置类的位置，这个步骤主要 `Spring` 里面的 **`SpringFactoriesLoader`** 来完成的。
-3. `Spring Boot` 拿到所有第三方 `jar` 包里面声明的配置类以后，再通过 `Spring` 提供的  **`ImportSelector` 接口**来实现对这些配置类的动态加载，从而去完成自动装配。
+3. `Spring Boot` 拿到所有第三方 `jar` 包里面声明的配置类以后，再通过 `Spring` 提供的 **`ImportSelector` 接口**来实现对这些配置类的动态加载，从而去完成自动装配。
 
 我认为整个 **`Spirng Boot`** 都是以**约定优于配置**作为整个框架的**核心思想**进行设计的，它的出现让开发人员可以更加地**聚焦在业务代码**上面，而**不需要去关心和业务无关的配置**。
 

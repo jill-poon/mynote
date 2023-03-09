@@ -88,7 +88,7 @@
 * 高性能
 * 高可扩展
 
-## [必要条件](10-必要条件)
+## [必要条件](10-必要条件.md)
 
 ### 1 DevOps Experience
 
@@ -109,7 +109,7 @@
 ### 5 系统监控 (Centralized Metrics)
 
 * ELK (完善)
-* [Prometheus](16-Prometheus) + grafana
+* [Prometheus](16-Prometheus.md) + grafana
 * Zabbix
 * Falcon
 * [Prometheus vs ELK](19-Prometheus-vs-ELK.md)

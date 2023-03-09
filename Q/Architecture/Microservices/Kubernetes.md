@@ -1,6 +1,6 @@
 # Kubernetes
 
-[Kubernetes](../../Microservices/40-Kubernetes.md)
+[Kubernetes](../../../Architecture/25-CloudNative/40-Kubernetes.md)
 
 ## 架构
 
