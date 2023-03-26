@@ -1,13 +1,13 @@
 # LSM 树
 
-## Log -Structured-Merge-Tree
+## Log-Structured-Merge Tree
 
 - 一种存储结构，目前 HBase, LevelDB, RocksDB 这些 NoSQL 存储都是采用的 LSM 树
 
 ## 核心特点
 
 - LSM 树的核心特点是利用**顺序写**来提高**写性能**，但因为**分层** (此处分层是指的分为内存和文件两部分) 的设计会**稍微降低读性能**
-- 但是通过**牺牲小部分读性能换来高性能写**，使得 LSM 树成为非常流行的存储结构
+- 通过**牺牲小部分读性能换来高性能写**，使得 LSM 树成为非常流行的存储结构
 
 ![LSM](images/LSM.drawio.svg)
 
@@ -27,7 +27,7 @@
 
 ### 3 SSTable (Sorted String Table)
 
-![[images/SSTable.drawio.svg]]
+![sstable](images/SSTable.drawio.svg)
 
 - **有序键值对集合**，是 LSM 树组在磁盘中的数据结构
 - 为了加快 SSTable 的读取，可以通过**建立 key 的索引**以及 **布隆过滤器** 来加快 key 的**查找**

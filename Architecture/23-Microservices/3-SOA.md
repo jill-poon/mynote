@@ -10,14 +10,11 @@
 
  [烟囱式架构](https://en.wikipedia.org/wiki/Information_silo)（Information Silo Architecture）：信息烟囱又名**信息孤岛**（Information Island），使用这种架构的系统也被称为孤岛式信息系统或者烟囱式信息系统。它指的是一种**完全不与其他相关信息系统进行互操作或者协调工作的设计模式**。这样的系统其实并没有什么“架构设计”可言。两个不发生交互的信息系统，让它们使用独立的数据库和服务器即可实现拆分，而唯一的问题，也是致命的问题是，*企业中真的 **存在完全不发生交互的部门吗**？* 对于两个信息系统来说，哪怕真的毫无业务往来关系，但系统的人员、组织、权限等主数据，会是完全独立、没有任何重叠的吗？这样“独立拆分”“老死不相往来”的系统，显然不可能是企业所希望见到的。
 
-
 ## 微内核架构
-
 
 [微内核架构](https://en.wikipedia.org/wiki/Microkernel)（Microkernel Architecture）：微内核架构也被称为插件式架构（Plug-in Architecture）。既然在烟囱式架构中，没有业务往来关系的系统也可能**需要共享人员、组织、权限等一些的公共的主数据**，那不妨就将这些主数据，连同其他可能被各子系统使用到的公共服务、数据、资源集中到一块，成为一个被所有业务系统**共同依赖的核心**（Kernel，也称为 Core System），具体的业务系统以**插件模块**（Plug-in Modules）的形式存在，这样也可提供可扩展的、灵活的、天然隔离的功能特性，即微内核架构。
 
 ![微内核架构示意](http://icyfenix.cn/assets/img/coresystem.f46f7c00.png)
-
 
 > 图片来自 O'Reilly 的开放文档《[Software Architecture Patterns](https://www.oreilly.com/content/software-architecture-patterns/)》
 
@@ -31,7 +28,6 @@
 [事件驱动架构](https://en.wikipedia.org/wiki/Event-driven_architecture)（Event-Driven Architecture）：**为了能让子系统互相通信**，一种可行的方案是在子系统之间建立一套事件队列管道（Event Queues），来自系统外部的消息将以事件的形式发送至管道中，各个子系统从管道里获取自己感兴趣、能够处理的事件消息，也可以为事件新增或者修改其中的附加信息，甚至可以自己发布一些新的事件到管道队列中去，如此，每一个**消息的处理者**都是**独立的**，**高度解耦**的，但又能与其他处理者（如果存在该消息处理者的话）通过事件管道进行互动。
 
 ![事件驱动架构示意](http://icyfenix.cn/assets/img/eventbus.a0c12890.png)
-
 
 > 图片来自 O'Reilly 的开放文档《[Software Architecture Patterns](https://www.oreilly.com/content/software-architecture-patterns/)》
 
