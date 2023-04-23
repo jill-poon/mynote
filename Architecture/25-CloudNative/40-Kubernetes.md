@@ -4,7 +4,7 @@ K8s 是一个容器编排系统，其关注的是容器应用在整个集群的�
 
 ## 架构
 
-![kubernetes-architecture](images/kubernetes-architecture.drawio.svg)
+![kubernetes-architecture](images/kubernetes-architecture.drawio.png)
 
 ### Master Node
 
