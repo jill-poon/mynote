@@ -2,11 +2,11 @@
 
 ## 什么是 Redis？简述它的优缺点？
 
-Redis 的全称是：Remote Dictionary Server，本质上是一个 Key-Value 类型的内存数据库，很像memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据 flush 到硬盘上进行保存。
+Redis 的全称是：Remote Dictionary Server，本质上是一个 Key-Value 类型的内存数据库，很像 memcached，整个数据库统统加载在内存当中进行操作，定期通过异步操作把数据库数据 flush 到硬盘上进行保存。
 因为是纯内存操作，Redis 的性能非常出色，每秒可以处理超过 10 万次读写操作，是已知性能最快的 Key-Value DB。
 Redis 的出色之处不仅仅是性能，Redis 最大的魅力是支持保存多种数据结构，此外单个 value 的最大限制是 1GB，不像 memcached 只能保存 1MB 的数据，因此 Redis 可以用来实现很多有用的功能。
 比方说用他的 List 来做 FIFO 双向链表，实现一个轻量级的高性 能消息队列服务，用他的 Set 可以做高性能的 tag 系统等等。
-另外 Redis 也可以对存入的 Key-Value 设置 expire 时间，因此也可以被当作一 个功能加强版的memcached 来用。 Redis 的主要缺点是数据库容量受到物理内存的限制，不能用作海量数据的高性能读写，因此 Redis 适合的场景主要局限在较小数据量的高性能操作和运算上。
+另外 Redis 也可以对存入的 Key-Value 设置 expire 时间，因此也可以被当作一个功能加强版的 memcached 来用。 Redis 的主要缺点是数据库容量受到物理内存的限制，不能用作海量数据的高性能读写，因此 Redis 适合的场景主要局限在较小数据量的高性能操作和运算上。
 
 ## Redis 与 memcached 相比有哪些优势？
 
@@ -43,12 +43,12 @@ Redis 为了达到最快的读写速度将数据都读到内存中，并通过�
 ## Redis 集群方案应该怎么做？都有哪些方案？
 
 1. codis，目前用的最多的集群方案，基本和 twemproxy 一致的效果，但它支持在节点数量改变情况下，旧节点数据可恢复到新 hash 节点。
-2. redis cluster3.0 自带的集群，特点在于他的分布式算法不是一致性 hash，而是 hash 槽的概念，以及自身支持节点设置从节点。具体看官方文档介绍。
+2. redis cluster 3.0 自带的集群，特点在于他的分布式算法不是一致性 hash，而是 hash 槽的概念，以及自身支持节点设置从节点。具体看官方文档介绍。
 3. 在业务代码层实现，起几个毫无关联的 redis 实例，在代码层，对 key 进行 hash 计算，然后去对应的redis 实例操作数据。这种方式对 hash 层代码要求比较高，考虑部分包括，节点失效后的替代算法方案，数据震荡后的自动脚本恢复，实例的监控，等等。
 
 ## Redis 集群方案什么情况下会导致整个集群不可用？
 
-有 A，B，C 三个节点的集群，在没有复制模型的情况下，如果节点 B 失败了，那么整个集群就会以为缺少5501-11000 这个范围的槽而不可用。
+有 A，B，C 三个节点的集群，在没有复制模型的情况下，如果节点 B 失败了，那么整个集群就会以为缺少 5501-11000 这个范围的槽而不可用。
 
 ## MySQL 里有 2000w 数据，redis 中只存 20w 的数据，如何保证 redis 中的数据都是热点数据？
 
@@ -66,7 +66,7 @@ redis 内存数据集大小上升到一定大小的时候，就会施行数据�
 当然，这是假定你是根据你用户的分数做递增的排序。如果你想返回用户及用户的分数，你需要这样执行：ZRANGE user_scores 0 10 WITHSCORES Agora Games 就是一个很好的例子，用 Ruby 实现的，它的排行榜就是使用 Redis 来存储数据的，你可以在这里看到。
 5. 发布/订阅，最后（但肯定不是最不重要的）是 Redis 的发布/订阅功能。发布/订阅的使用场景确实非常多。我已看见人们在社交网络连接中使用，还可作为基于发布/订阅的脚本触发器，甚至用 Redis 的发布/订阅功能来建立聊天系统！
 
-## Redis 支持的 Java 客户端都有哪些？官方推荐用哪个？ Redisson、Jedis、lettuce 等等，官方推荐使用 Redisson。## Redis 和 Redisson 有什么关系？
+## Redis 支持的 Java 客户端都有哪些？官方推荐用哪个？ Redisson、Jedis、lettuce 等等，官方推荐使用 Redisson。Redis 和 Redisson 有什么关系？
 
 Redisson 是一个高级的分布式协调 Redis 客服端，能帮助用户在分布式环境中轻松实现一些 Java 的对象 (Bloom filter， BitSet， Set， SetMultimap， ScoredSortedSet， SortedSet， Map， ConcurrentMap， List， ListMultimap， Queue， BlockingQueue， Deque， BlockingDeque， Semaphore， Lock， ReadWriteLock， AtomicLong， CountDownLatch， Publish / Subscribe， HyperLogLog)。
 

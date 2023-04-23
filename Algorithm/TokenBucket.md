@@ -6,7 +6,7 @@
 
 如下图，灰色部分是令牌桶，有容量限制，只能最多存放 capacity 个令牌，每秒以固定的速度向桶中增加令牌，如果桶的容量满了，则等待桶中令牌被消耗后，再增加令牌。另一边应用进程拿到令牌后才处理请求，如果没有拿到令牌，则不处理该请求。
 
-![令牌桶](./images/token_bucket.drawio.svg)
+![令牌桶](./images/token_bucket.drawio.png)
 
 ```Java
 public class TokenBucket {
