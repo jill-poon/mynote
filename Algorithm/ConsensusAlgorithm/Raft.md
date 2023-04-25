@@ -36,6 +36,20 @@
 
 由 Candidate 选举期间发起。
 
+```go
+type RequestVoteRequest struct {
+  term         int // 自己当前任期号
+  candidateId  int // 自己ID
+  lastLogIndex int // 前一个日志号
+  lastLogTerm  int // 前一个日志任期号
+}
+
+type RequestVoteResponse struct {
+  term        int  // 自己当前任期号
+  voteGranted bool // 是否同意
+}
+```
+
 ### 心跳机制
 
 由 Leader 发出 (**随机超时**)，维护任期，否则开始选举。
@@ -62,11 +76,11 @@ Raft 使用顺序日志复制，避免日志空洞
 
 ```go
 type AppendEntiresRequest struct {
-    term int // 自己当前任期号
-    leaderId int // 自己ID
-    preLogIndex int // 前一个日志号
-    preLogTerm int // 前一个日志任期号
-    entires []byte // 当前日志体
+    term         int // 自己当前任期号
+    leaderId     int // 自己ID
+    prevLogIndex int // 前一个日志号
+    prevLogTerm  int // 前一个日志任期号
+    entires      []byte // 当前日志体
     leaderCommit int // leader 的已提交日志号
 }
 ```
@@ -136,7 +150,7 @@ type AppendEntiresRequest struct {
 
 ![raft-33_safety_committed_log](images/raft-33_safety_committed_log.excalidraw.png)
 
-1. 如果某个 Leader 在提交某个日志条目**之前崩溃**了，以后的 Leader 会试图完成该日志条目的 **复制**，复制，而**非提交**，**不能通过心跳提交老日志**。
+1. 如果某个 Leader 在提交某个日志条目**之前崩溃**了，以后的 Leader 会试图完成该日志条目的 **复制**，而**非提交**，**不能通过心跳提交老日志**。
 2. Raft **永远不会**通过计算副本数目的方式来**提交之前任期内的日志条目**，而是使用新 Leader 自己的任期号，才能提交旧 Leader 的日志
 
 ### 规则 3 《Follower 和 Candidate 宕机处理》
