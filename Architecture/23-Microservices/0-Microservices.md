@@ -109,10 +109,10 @@
 ### 5 系统监控 (Centralized Metrics)
 
 * ELK (完善)
-* [Prometheus](16-Prometheus.md) + grafana
+* [Prometheus](metrics/Prometheus/Prometheus.md) + grafana
 * Zabbix
 * Falcon
-* [Prometheus vs ELK](19-Prometheus-vs-ELK.md)
+* [Prometheus vs ELK](metrics/Prometheus/Prometheus-vs-ELK.md)
 
 ### 6 Centralized Logging
 

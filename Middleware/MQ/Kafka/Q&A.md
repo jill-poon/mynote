@@ -1,40 +1,40 @@
 # Kafka
 
-## Kafka设计时什么样的呢？
+## Kafka 设计时什么样的呢？
 
-- Kafka将消息以topic为单位进行归纳
-- 将向Kafka topic发布消息的程序成为producers.
-- 将预订topics并消费消息的程序成为consumer.
-- Kafka以集群的方式运行，可以由一个或多个服务组成，每个服务叫做一个broker.
-- producers通过网络将消息发送到Kafka集群，集群向消费者提供消息
+- Kafka 将消息以 topic 为单位进行归纳
+- 将向 Kafka topic 发布消息的程序成为 producers.
+- 将预订 topics 并消费消息的程序成为 consumer.
+- Kafka 以集群的方式运行，可以由一个或多个服务组成，每个服务叫做一个 broker.
+- producers 通过网络将消息发送到 Kafka 集群，集群向消费者提供消息
 
 ## 数据传输的事物定义有哪三种？
 
-- 数据传输的事务定义通常有以下三种级别：  
+数据传输的事务定义通常有以下三种级别：  
 
 - 最多一次: 消息不会被重复发送，最多被传输一次，但也有可能一次不传输
 - 最少一次: 消息不会被漏发送，最少被传输一次，但也有可能被重复传输.
-- 精确的一次（Exactly once）: 不会漏传输也不会重复传输,每个消息都传输被一次而且仅仅被传输一次，这是大家所期望的
+- 精确的一次（Exactly once）: 不会漏传输也不会重复传输，每个消息都传输被一次而且仅仅被传输一次，这是大家所期望的
 
 ## Kafka 判断一个节点是否还活着有那两个条件？
 
-- 节点必须可以维护和ZooKeeper的连接，Zookeeper通过心跳机制检查每个节点的连接
-- 如果节点是个follower,他必须能及时的同步leader的写操作，延时不能太久
+- 节点必须可以维护和 ZooKeeper 的连接，Zookeeper 通过心跳机制检查每个节点的连接
+- 如果节点是个 follower ，他必须能及时的同步 leader 的写操作，延时不能太久
 
-## producer是否直接将数据发送到broker的leader(主节点)？
+## producer 是否直接将数据发送到 broker 的 leader(主节点)？
 
-- producer直接将数据发送到broker的leader(主节点)，不需要在多个节点进行分发，为了帮助producer做到这点，所有的Kafka节点都可以及时的告知:哪些节点是活动的，目标topic目标分区的leader在哪。这样producer就可以直接将消息发送到目的地了
+- producer 直接将数据发送到 broker 的 leader(主节点)，不需要在多个节点进行分发，为了帮助 producer 做到这点，所有的 Kafka 节点都可以及时的告知：哪些节点是活动的，目标 topic 目标分区的 leader 在哪。这样 producer 就可以直接将消息发送到目的地了
 
-## Kafa consumer是否可以消费指定分区消息？
+## Kafa consumer 是否可以消费指定分区消息？
 
 - Kafa consumer消费消息时，向broker发出"fetch"请求去消费特定分区的消息，consumer指定消息在日志中的偏移量（offset），就可以消费从这个位置开始的消息，customer拥有了offset的控制权，可以向后回滚去重新消费之前的消息，这是很有意义的
 
-## Kafka消息是采用Pull模式，还是Push模式？
+## Kafka 消息是采用 Pull 模式，还是 Push 模式？
 
-- Kafka最初考虑的问题是，customer应该从brokes拉取消息还是brokers将消息推送到consumer，也就是pull还push。在这方面，Kafka遵循了一种大部分消息系统共同的传统的设计：producer将消息推送到broker，consumer从broker拉取消息
-- 一些消息系统比如Scribe和Apache Flume采用了push模式，将消息推送到下游的consumer。这样做有好处也有坏处：由broker决定消息推送的速率，对于不同消费速率的consumer就不太好处理了。消息系统都致力于让consumer以最大的速率最快速的消费消息，但不幸的是，push模式下，当broker推送的速率远大于consumer消费的速率时，consumer恐怕就要崩溃了。最终Kafka还是选取了传统的pull模式
-- Pull模式的另外一个好处是consumer可以自主决定是否批量的从broker拉取数据。Push模式必须在不知道下游consumer消费能力和消费策略的情况下决定是立即推送每条消息还是缓存之后批量推送。如果为了避免consumer崩溃而采用较低的推送速率，将可能导致一次只推送较少的消息而造成浪费。Pull模式下，consumer就可以根据自己的消费能力去决定这些策略
-- Pull有个缺点是，如果broker没有可供消费的消息，将导致consumer不断在循环中轮询，直到新消息到t达。为了避免这点，Kafka有个参数可以让consumer阻塞知道新消息到达(当然也可以阻塞知道消息的数量达到某个特定的量这样就可以批量发
+- Kafka 最初考虑的问题是，customer 应该从 brokes 拉取消息还是 brokers 将消息推送到 consumer，也就是 pull 还 push。在这方面，Kafka 遵循了一种大部分消息系统共同的传统的设计：producer 将消息推送到 broker，consumer 从 broker 拉取消息
+- 一些消息系统比如 Scribe 和 Apache Flume 采用了 push 模式，将消息推送到下游的 consumer。这样做有好处也有坏处：由 broker 决定消息推送的速率，对于不同消费速率的 consumer 就不太好处理了。消息系统都致力于让 consumer 以最大的速率最快速的消费消息，但不幸的是，push 模式下，当 broker 推送的速率远大于 consumer 消费的速率时，consumer 恐怕就要崩溃了。最终 Kafka 还是选取了传统的 pull 模式
+- Pull 模式的另外一个好处是 consumer 可以自主决定是否批量的从 broker 拉取数据。Push 模式必须在不知道下游 consumer 消费能力和消费策略的情况下决定是立即推送每条消息还是缓存之后批量推送。如果为了避免 consumer 崩溃而采用较低的推送速率，将可能导致一次只推送较少的消息而造成浪费。Pull 模式下，consumer 就可以根据自己的消费能力去决定这些策略
+- Pull 有个缺点是，如果 broker 没有可供消费的消息，将导致 consumer 不断在循环中轮询，直到新消息到 t 达。为了避免这点，Kafka 有个参数可以让 consumer 阻塞知道新消息到达(当然也可以阻塞知道消息的数量达到某个特定的量这样就可以批量发
 
 ## Kafka存储在硬盘上的消息格式是什么？
 
@@ -44,9 +44,9 @@
 - CRC校验码: 4 bytes
 - 具体的消息: n bytes
 
-## Kafka高效文件存储设计特点
+## Kafka 高效文件存储设计特点
 
-- Kafka把topic中一个parition大文件分成多个小文件段，通过多个小文件段，就容易定期清除或删除已经消费完文件，减少磁盘占用。
+- Kafka 把 topic 中一个 parition 大文件分成多个小文件段，通过多个小文件段，就容易定期清除或删除已经消费完文件，减少磁盘占用。
 - 通过索引信息可以快速定位message和确定response的最大大小。
 - 通过index元数据全部映射到memory，可以避免segment file的IO磁盘操作。
 - 通过索引文件稀疏存储，可以大幅降低index文件元数据占用空间大小。
@@ -57,7 +57,7 @@
 - Kafka 是一个分布式系统：它以集群的方式运行，可以灵活伸缩，在内部通过复制数据提升容错能力和高可用性
 - Kafka 支持实时的流式处理
 
-## Kafka创建Topic时如何将分区放置到不同的Broker中
+## Kafka 创建 Topic 时如何将分区放置到不同的 Broker 中
 
 - 副本因子不能大于 Broker 的个数；
 - 第一个分区（编号为0）的第一个副本放置位置是随机从 brokerList 选择的；
@@ -80,10 +80,10 @@
 
 ## kafka的ack机制
 
-- request.required.acks有三个值 0 1 -1
-- 0:生产者不会等待broker的ack，这个延迟最低但是存储的保证最弱当server挂掉的时候就会丢数据
-- 1：服务端会等待ack值 leader副本确认接收到消息后发送ack但是如果leader挂掉后他不确保是否复制完成新leader也会导致数据丢失
-- \-1：同样在1的基础上 服务端会等所有的follower的副本受到数据后才会受到leader发出的ack，这样数据不会丢失
+- request.required.acks 有三个值 0 1 -1
+- 0:生产者不会等待 broker 的 ack，这个延迟最低但是存储的保证最弱当 server 挂掉的时候就会丢数据
+- 1：服务端会等待 ack 值 leader 副本确认接收到消息后发送 ack 但是如果 leader 挂掉后他不确保是否复制完成新 leader 也会导致数据丢失
+- -1：同样在1的基础上服务端会等所有的 follower 的副本受到数据后才会受到 leader 发出的 ack，这样数据不会丢失
 
 ## Kafka的消费者如何消费数据
 
@@ -101,7 +101,7 @@
 
 ## kafaka生产数据时数据的分组策略
 
-- 生产者决定数据产生到集群的哪个partition中
+- 生产者决定数据产生到集群的哪个 partition 中
 - 每一条消息都是以（key，value）格式
-- Key是由生产者发送数据传入
-- 所以生产者（key）决定了数据产生到集群的哪个partition
+- Key 是由生产者发送数据传入
+- 所以生产者（key）决定了数据产生到集群的哪个 partition

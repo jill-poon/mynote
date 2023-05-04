@@ -1,6 +1,6 @@
 # Kubernetes
 
-[Kubernetes](../../../Architecture/25-CloudNative/40-Kubernetes.md)
+[Kubernetes](../../../Containerized/Kubernetes/00-Kubernetes.md)
 
 ## 架构
 
