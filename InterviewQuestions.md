@@ -8,7 +8,7 @@
 
 ### Programming
 
-#### [MultiThreading](./Java/Multithreading/Q&A.md)
+#### [MultiThreading](Java/10-Multithreading/Q&A.md)
 
 ### Framework
 

@@ -20,7 +20,7 @@
 
 ## Sentinel
 
-[Sentinel](../../../Java/Spring/Cloud/Sentinel.md)
+[Sentinel](../../../Java/20-Spring/Cloud/Sentinel.md)
 
 ### 什么是Sentinel？
 
@@ -46,7 +46,7 @@
 
 ## Seata
 
-[Seata](../../../Java/Spring/Cloud/Seata.md)
+[Seata](../../../Java/20-Spring/Cloud/Seata.md)
 
 ### 1 Seata 是什么？
 

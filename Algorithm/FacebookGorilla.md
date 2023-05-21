@@ -14,13 +14,13 @@ Gorilla源自Facebook对于内部基础设施的近乎”变态”的监控需�
 
 - **重写轻读**
 - 以**聚合分析**为主，几乎不存在针对单 Data Point 的点查场景。因此，即使丢失个别的 Data Points，一般不会影响到整体的分析结果。
-- 越老的数据价值越低，而应用通常只读取最近发生的数据。**Facebook的统计表明，85%的查询与最近26个小时的数据写入有关。**
+- 越老的数据价值越低，而应用通常只读取最近发生的数据。**Facebook 的统计表明，85%的查询与最近26个小时的数据写入有关。**
 
 ## Timestamp压缩 (Delta-Of-Delta)
 
 在大多数情形下，可以将一个 Time Series 中的连续的 Data Points 的 Timestamp 列表视作一个**等差数列**，这是 Delta-Of-Delta 编码算法的最适用场景。编码原理如下：
 
-- 在Block Header中，存放起始Timestamp T(-1)..一个Block对应2个小时的时间窗口。假设第一个Data Point的Timestamp为T(0)，那么，实际存放时，我们只需要存T(0)与T(-1)的差值。
+- 在 Block Header 中，存放起始 Timestamp T(-1)..一个 Block 对应2个小时的时间窗口。假设第一个 Data Point 的 Timestamp 为 T(0)，那么，实际存放时，我们只需要存 T(0)与 T(-1)的差值。
 - 对于接下来的 Data Point 的 Timestamp T(N), 按如下算法计算 Delta Of Delta 值：
 
 $$D= (t_{n} - t_{n-1}) - (t_{n-1} - t_{n-2})$$
@@ -57,8 +57,8 @@ Gorilla 中限制 Point Value 的类型为**双精度浮点数**，在未启用�
 **XOR编码**详细原理如下：
 
 - 第一个 `Value` 存储时不做任何压缩。
-- 后面产生的每一个`Value`与前一个`Value`计算`XOR`值：
-  1. 如果 XOR 值为0，即两个 Value 相同，那么存为'0'，只占用一个 bit。
+- 后面产生的每一个 `Value` 与前一个 `Value` 计算 `XOR` 值：
+  1. 如果 XOR 值为0，即两个 Value 相同，那么存为 '0'，只占用一个 bit。
   2. 如果 XOR 为非0，首先计算 XOR 中位于**前端**的和**后端**的0的个数，即 Leading Zeros 与 Trailing Zeros。
   - 第一个bit值存为'1'。
   - 如果Leading Zeros与Trailing Zeros与前一个XOR值相同，则第2个bit值存为'0'，而后，紧跟着去掉Leading Zeros与Trailing Zeros以后的**有效XOR值**部分。

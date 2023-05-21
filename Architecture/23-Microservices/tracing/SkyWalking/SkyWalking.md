@@ -38,7 +38,7 @@ Zabbix、Premetheus、open-falcon 等监控系统主要***关注服务器硬件�
 
 ## 自定义 SkyWalking 链路
 
-默认情况下 Skywalking 是没有记录我们的业务方法的，如果需要添加业务方法的链路监控我们就需要添加如下的依赖，然后在业务方法上添加 `@Trace` 注解。
+默认情况下 SkyWalking 是没有记录我们的业务方法的，如果需要添加业务方法的链路监控我们就需要添加如下的依赖，然后在业务方法上添加 `@Trace` 注解。
 
 ```xml
 
@@ -61,3 +61,71 @@ Zabbix、Premetheus、open-falcon 等监控系统主要***关注服务器硬件�
 })
 ```
   
+## 集成日志框架
+
+将微服务的日志框架去集成 SkyWalking，我们希望在我们微服务中日志中，能够记录当前调用链路的 id，然后我们再根据这个 id 去 SkyWalking 的前端界面中进行搜索找到对应的调用链路记录。
+
+因为springboot默认实现的日志框架是logback，这里也就拿logback举例
+
+```xml
+<!-- skywalking 日志记录  -->
+<dependency>
+    <groupId>org.apache.skywalking</groupId>
+    <artifactId>apm-toolkit-logback-1.x</artifactId>
+    <version>8.5.0</version>
+</dependency>
+```
+
+在项目中 `resources`目录下创建 `logback-spring.xml`文件
+
+```xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level logger_name:%logger{36} - [%tid] - message:%msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="console" />
+    </root>
+</configuration>
+```
+
+在 SkyWalking UI 的日志菜单中显示日志信息
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--  控制台日志输出的格式中添加tid  -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level logger_name:%logger{36} - [%tid] - message:%msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+    <!-- skywalking grpc 日志收集 8.4.0版本开始支持 -->
+    <appender name="grpc-log" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{36} -%msg%n</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="console" />
+        <appender-ref ref="grpc-log" />
+    </root>
+</configuration>
+```
+
+```properties
+plugin.toolkit.log.grpc.reporter.server_host=${SW_GRPC_LOG_SERVER_HOST:127.0.0.1}
+plugin.toolkit.log.grpc.reporter.server_port=${SW_GRPC_LOG_SERVER_PORT:11800}
+plugin.toolkit.log.grpc.reporter.max_message_size=${SW_GRPC_LOG_MAX_MESSAGE_SIZE:10485760}
+plugin.toolkit.log.grpc.reporter.upstream_timeout=${SW_GRPC_LOG_GRPC_UPSTREAM_TIMEOUT:30}
+```

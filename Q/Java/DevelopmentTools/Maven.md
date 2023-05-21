@@ -1,6 +1,6 @@
 # Maven
 
-[💡](../../../Java/DevelopmentTools/Maven.md)
+[💡](../../../Java/80-DevelopmentTools/Maven.md)
 
 ## 主要作用 (3)
 

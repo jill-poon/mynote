@@ -45,7 +45,7 @@
 * 讨论特定功能流程，以确保大家理解没有明显分歧，最后达到理解的一致性。
 * 有明确范围，所以路径越完整越好。
 * 在细节中找出流程的Bug，并且每个Bug都需要被处理。
-* 包含Event、Actor、Command、 System、Policy、 Read Modelo
+* 包含Event、Actor、Command、 System、Policy、 Read Model
 
 ### Software Design (软件开发)
 
